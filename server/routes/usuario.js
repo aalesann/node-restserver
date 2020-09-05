@@ -6,7 +6,7 @@ const Usuario = require('../models/Usuario');
 
 const app = express();
 
-app.get('/usuario', (req, res) => {
+app.get('/usuarios', (req, res) => {
 
     let desde = req.query.desde || 0;
     desde = Number(desde);
@@ -34,7 +34,7 @@ app.get('/usuario', (req, res) => {
             })
 });
 
-app.post('/usuario', (req, res) => {
+app.post('/usuarios', (req, res) => {
     let body = req.body;
     const usuario = new Usuario({
         nombre: body.nombre,
@@ -61,7 +61,7 @@ app.post('/usuario', (req, res) => {
 
 });
 
-app.put('/usuario/:id', (req, res) => {
+app.put('/usuarios/:id', (req, res) => {
 
     let id = req.params.id;
     let body = _.pick(req.body,['nombre', 'email', 'img', 'role']);
@@ -84,7 +84,7 @@ app.put('/usuario/:id', (req, res) => {
 
 });
 
-app.delete('/usuario/:id', (req, res) => {
+app.delete('/usuarios/:id', (req, res) => {
 
     let id = req.params.id;
     const estado = false;    
