@@ -11,13 +11,8 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 
-app.use ( require('./routes/usuario') )
-
-// mongoose.connect('mongodb://127.0.0.1/cafe', (err, res)=> {
-// if( err ) throw err;
-// console.log('Base de datos ONLINE');
-// })
-
+// Configuración global de rutas
+app.use ( require('./routes/index'));
 
 const conectar = async () => {
   await mongoose.connect(process.env.URLDB, {

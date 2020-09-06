@@ -3,10 +3,10 @@ const bcrypt = require('bcrypt');
 const _ = require('underscore');
 
 const Usuario = require('../models/Usuario');
-
+const { verificaToken, verificaAdminRole } = require('../middlewares/authentication')
 const app = express();
 
-app.get('/usuarios', (req, res) => {
+app.get('/usuarios', verificaToken ,(req, res) => {
 
     let desde = req.query.desde || 0;
     desde = Number(desde);
@@ -34,7 +34,7 @@ app.get('/usuarios', (req, res) => {
             })
 });
 
-app.post('/usuarios', (req, res) => {
+app.post('/usuarios', [verificaToken, verificaAdminRole], (req, res) => {
     let body = req.body;
     const usuario = new Usuario({
         nombre: body.nombre,
@@ -61,9 +61,10 @@ app.post('/usuarios', (req, res) => {
 
 });
 
-app.put('/usuarios/:id', (req, res) => {
+app.put('/usuarios/:id', [verificaToken, verificaAdminRole], (req, res) => {
 
     let id = req.params.id;
+    // Validación de parámetros que se permiten actualizar
     let body = _.pick(req.body,['nombre', 'email', 'img', 'role']);
 
     Usuario.findByIdAndUpdate(id, body, { new: true, runValidators: true }, (err, usuarioDB)=> {
@@ -84,7 +85,7 @@ app.put('/usuarios/:id', (req, res) => {
 
 });
 
-app.delete('/usuarios/:id', (req, res) => {
+app.delete('/usuarios/:id', [verificaToken, verificaAdminRole], (req, res) => {
 
     let id = req.params.id;
     const estado = false;    
